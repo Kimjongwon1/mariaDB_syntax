@@ -69,17 +69,43 @@ ex)CREATE TABLE posts(id INT PRIMARY KEY,title VARCHAR(255), content VARCHAR(255
 -- ALTER
 -- 테이블 이름변경
 ex)ALTER TABLE 테이블명(posts) RENAME 새로운 테이블명(post);
-
+ALTER TABLE posts RENAME post;
 -- 컬럼추가
 ALTER TABLE 테이블명 ADD COLUMN 컬럼명 자료형(NULL 또는 NOTNULL);
 ALTER TABLE author ADD COLUMN role VARCHAR(50);
 
--- 필드타입변경
+-- 컬럼변경(덮어쓰기됨)
 ALTER TABLE 테이블명 MODIFY COLUMN 컬럼명 타입[제약조건->null,  not null]
 ALTER TABLE author MODIFY COLUMN name VARCHAR(100) not null;
 
 -- 컬럼이름변경 content->contents
 ALTER TABLE 테이블명 CHANGE COLUMN 기존컬럼명 새로운 컬럼명 타입[제약조건->null,  not null]
-
+ALTER TABLE post CHANGE COLUMN content contents varchar(255);
 -- 칼럼삭제 -> test1삭제
 ALTER TABLE 테이블명 DROP COLUMN 컬럼명;
+ALTER TABLE author DROP COLUMN test1;
+
+-- 테이블 삭제
+DROP TABLE 이름
+-- 테이블의 데이터만을 지우고 싶을 때
+DELETE FROM 테이블이름
+TRUNCATE TABLE 테이블이름
+-- IF EXISTS
+특정 객체(데이터베이스나 테이블)가 존재하는 경우에만 명령어를 실행
+DROP DATABASE 또는 TABLE IF EXISTS abc;
+
+-- 실습
+1.post 테이블의 contents 칼럼 글자수 3000으로 변경
+ALTER TABLE post MODIFY COLUMN contents VARCHAR(3000) not null;
+2.author테이블에 address칼럼 varchar(255)로 추가
+ALTER TABLE author ADD COLUMN address varchar(255);
+3.post 테이블 생성문 미리 확인 ->post 테이블 삭제->post테이블 다시생성
+-- 'CREATE TABLE `post` (
+--   `id` int(11) NOT NULL,
+--   `title` varchar(255) DEFAULT NULL,
+--   `contents` varchar(3000) NOT NULL,
+--   `author_id` int(11) DEFAULT NULL,
+--   PRIMARY KEY (`id`),
+--   KEY `author_id` (`author_id`),
+--   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci'
