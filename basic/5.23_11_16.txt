@@ -1,0 +1,86 @@
+시험나올만한거
+chmod
+chown 외우기
+패키지는 확실히(centOs,redhat 등등 용도 구분)
+ps-ef
+
+ssh
+scp
+
+나노단점
+인코딩
+컴퓨터는 문자저장x
+문자가 깨지는경우가 있음
+vi는 잘 안깨짐
+
+vi명령어 전부
+a를 넣으면 그 다음 커서
+!넣으면 강제실행
+
+
+-----------------------리눅스 끝
+
+DB
+
+dbms
+
+Mysql,MariaDB,Oracle,Postgres 등 관계형 DB
+-서로 관계를 갖는 데이터들의 집합
+-테이블, 행, 열 등의 구조로 된 데이터 집합
+
+스키마=데이터베이스
+컬럼=열=속성
+참조관계 =외래키
+
+MariaDB-mysql의 포크로 시작됨 
+오픈소스
+
+MongoDB,Redis 등 No SQL
+
+
+SQL문 : 관계형DBMS의 프로그래밍 언어
+
+CRUD
+-Create,Read,Update,Delete
+-데이터베이스의 생성,조회,수정,삭제
+SQL 의 구문
+ DDL
+데이터베이스나 테이블 등을 생성, 삭제, 구조 변경
+-CREATE,ALTER,DROP
+DML
+데이터베이스에 저장된 데이터를 처리하거나 조회
+INSERT,UPDATE,DELETE,SELECT 등
+DCL
+사용자 권한부여
+GRANT,REVOKE 등
+
+테이블
+행(로우),튜플,레코드 :가로
+
+열(컬럼),필드,속성 :세로
+구체적으로는 속성은 컬럼의 성격(ex)이름, 나이 등) 그 자체를 의미
+필드는 컬럼의 구체적인 데이터 개별 데이터 항목을 의미
+
+값(value) 데이터
+
+키(key) 행의 식별자
+테이블에 저장된 레코드를 고유하게 식별하는 키(primary key 통칭 p.k ->pk를 지정하면 not null 이 됨)
+
+외래키
+두 테이블을 서로 연결하는데 사용되는 키
+  
+DB생성예제 : create database board;
+
+있는 DB보기 :show databases;
+DB 선택:use board;
+테이블 보기:show tables;(DB를 선택해야 테이블을 볼 수 있음)
+
+DB삭제 : DROP DATABASE 데이터베이스 이름
+
+p.k 지정방식 -테이블차원에서 지정
+	      -다 끝나고 지정 
+		결과는 같음
+
+mariadb -u root -p
+
+use board;
