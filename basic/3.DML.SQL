@@ -22,3 +22,21 @@ Delete FROM 테이블이름 WHERE 필드이름=데이터값
 WHERE절을 생략하면,해당 테이블에 저장된 모든 데이터가 삭제
 --예제
 delete from author where author_id=5;
+
+-- DELETE와 TRUNCATE, DROP의 차이
+DROP은 테이블 구조 전체 삭제
+DELETE와 TRUNCATE의 차이
+delete는 storage까지 삭제하지는 않아 복구가 가능
+delete는 log를 남김
+delete의 삭제속도는 TRUNCATE보다 느림
+
+-- SELECT
+SELECT 필드이름 FROM 테이블이름 [where조건]
+
+select * from member;
+
+예제
+select * from author where id =1;
+select name, email from author where id=1;
+select * from author where id >1;
+select * from author where id>1 AND name = 'kim'
