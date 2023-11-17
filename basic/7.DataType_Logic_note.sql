@@ -136,3 +136,57 @@ insert into author(id,name,email,password,role,address,age)values('2','박자라
 
 role데이터 없이 insert
 insert into author(id,name,email,password,address,age)values('3','최자라','abcfde@naver.com','123345','2','22');
+
+
+날짜와 시간
+DATE
+	날짜를 저장할 수 있는 타입
+	YYYY-MM-DD
+DATETIME(m)
+ 	날짜와 함께 시간까지 저장, m지정시 소수점 microseconds
+	'YYYY-MM-DD HH:MM:SS'
+	가장 많이 사용
+	java의 localdatetime과 sync
+DATETIME DEFAULT CURRENT_TIMESTAMP
+	현재시간을 default로 삽입하는 형식
+
+비교연산자
+
+-
+
+!=,<>
+<,<=,>,>=
+IS NULL, IS NOT NULL
+BETWEEN min AND max
+	피연산자의 값이 min 값보다 작거나 max 크면 참을 반환함(이상, 이하)
+IN(), NOT IN()
+프로그래머스 나이 정보가 없는 회원 수 구하기 문제풀이 ㄱㄱ
+
+논리연산자
+
+A AND B(A,B가 참이면)
+	-&&도 가능
+OR 
+	||
+NOT 
+	!
+
+	LIKE 
+	특정패턴을 포함하는 데이터만을 검색하기 위한 와일트카드 문자
+	일반적으로 %와 같이 사용됨
+	SELECT * FROM author WHERE name LIKE '홍%';
+	SELECT * FROM author WHERE name LIKE '%동';
+	SELECT * FROM author WHERE name LIKE '%길%';
+
+SELECT * FROM author WHERE name NOT LIKE '%자%';
+SELECT * FROM author WHERE name LIKE '김%';
+
+
+NOT LIKE
+
+REGEXP
+	정규표현식을 토대로 패턴 연산 수행
+	SELECT * FROM author WHERE name REGEXP '[a-z]';
+	SELECT * FROM author WHERE name REGEXP '[가-힣]';
+
+NOT REGEXP

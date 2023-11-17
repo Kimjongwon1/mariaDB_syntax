@@ -52,3 +52,21 @@ insert into author(id,name,email,password,role,address,age)values('2','박자라
 
 role데이터 없이 insert
 insert into author(id,name,email,password,address,age)values('3','최자라','abcfde@naver.com','123345','2','22');
+
+실습
+
+post 테이블에 DATETIME으로 createdTime 컬럼 추가 및 default로 현재 시간 들어가도록 설정
+	datetime(6) default current_timestamp(6)
+	컬럼 추가 후 insert 테스트
+
+ALTER TABLE post ADD COLUMN createdTime datetime(6) default current_timestamp(6);
+insert into post(id)values('6');
+
+실습
+author 테이블의 id가 1,2,4는 아닌 데이터 조회(NOT IN 사용)
+select * from author where id NOT IN(1,2,4);
+
+post 테이블의 id가 2~4까지 데이터 조회
+	between활용
+	and 조건 활용
+	or 조건 활용
