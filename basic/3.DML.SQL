@@ -40,3 +40,25 @@ select * from author where id =1;
 select name, email from author where id=1;
 select * from author where id >1;
 select * from author where id>1 AND name = 'kim'
+-- Select시 중복 제거
+select distinct name from author;
+
+-- 선택한 결과의 정렬
+-- SELECT문으로 선택한 결과를 Order by 절을 사용하여 정렬
+-- 기본설정으로 오름차순(ASC), 내림차순은 desc
+-- 여러필드의 데이터를 , 사용 하여 여러기준으로 정렬
+-- order by 생략시 pk를 기준으로 오름차순 정렬한 값 변환
+
+-- order by
+select * from author order by name desc;
+
+-- order by 멀티: 먼저 쓴 칼럼 우선정렬, asc/desc 생략시 asc 적용
+select *from author order by id desc limit 2;
+
+--allias(별칭)을 이용한 처리
+--테이블과 필드에 임시로 allias를 부여하고, 해당 allias를 selecte에서 사용(as 생략가능)
+select 필드이름 as 별칭 from 테이블명;
+-- dPwp
+select 필드이름 from 테이블이름 as 별칭;
+-- 예제
+select name as 이름, email from author as a;
