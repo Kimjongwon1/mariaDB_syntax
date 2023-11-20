@@ -1,0 +1,265 @@
+프로젝트->
+서비스 선정, DB 시각화(모델링), DDL, DML문 테스트
+
+
+SELECT BOOK_ID,DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE from BOOK where CATEGORY ='인문' AND DATE_FORMAT(PUBLISHED_DATE, '%Y') = '2021' order by PUBLISHED_DATE ASC;
+
+# 2
+SELECT BOOK_ID,DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE from BOOK where CATEGORY ='인문' AND PUBLISHED_DATE like '2021%' order by PUBLISHED_DATE ASC;
+
+# 3
+SELECT BOOK_ID,DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE from BOOK where CATEGORY ='인문' AND PUBLISHED_DATE BETWEEN '2021-01-01' AND '2021-12-31' order by PUBLISHED_DATE ASC;
+
+->AS 굳이 쓸필요없는듯?
+
+
+CAST, CONVERT 사용시 유의사항
+	최신버전
+		-CAST('123' as INT) 방식으로 int 사용가능
+		-CAST('123' as signed)방식으로 singed(또는 unsigned)사용 가능
+	구버전	
+		-CASTS('123' as signed)방식으로 singed(또는 unsigned)만 사용 가능
+	여기서 signed는 부호있는 정수 , 즉 음/양수 모두 포함
+		unsigned는 부호 없는 정수로서 0이상 양수를 의미
+
+날짜 데이터 조회하는 방식 중 많이 사용 하는 방식
+	DATE_FORMAT(date,format)을 활용한 조회
+		-Y, mm, dd, H, i, s
+	LIKE
+	SELECT * FROM post where createdtime like '2023%';
+	Between
+	특정날짜 범위를 지정하여 데이터를 검색
+	WHERE createdtime BETWEEN '2023-11-01' AND '2023-11-20';	
+	날짜비교연산자
+	WHERE createdtime >= '2021-01-01' AND createdtime<= '2023-11-17'
+오늘날짜 관련함수
+	-now();
+	ex) select now();
+실습 date_format,like,between,비교연산자를 각각 사용하여 2023년 생성된 데이터 출력
+select id, DATE_FORMAT(createdTime, '%y-%m-%d') from post where DATE_FORMAT(createdTime, '%Y-%m') = '2023-11' ;
+SELECT * FROM post WHERE createdtime BETWEEN '2023-11-01' AND '2023-11-20';	
+SELECT * FROM post WHERE createdtime >= '2021-01-01' AND createdtime<= '2023-11-17';
+실급 now()를 활용하여 오늘날짜에 생성된 데이터 출력
+select now();
+	
+
+제약조건
+데이터를 입력받을 때 실행되는 검사 규칙
+
+create문으로 테이블을 생성 또는 alter문으로 필드를 추가할 때 설정
+종류
+ NOT NULL
+ PRIMARY KEY -> NOT NULL, UNIQUE, 한 테이블 당 1개
+ FOREIGN KEY
+ UNIQUE -> 한 테이블에 여러개 설정가능
+
+NOT NULL
+
+default값은 nullable
+
+not null제약 조건이 설정된 필드는 무조건 데이터를 가지고 있어야 한다.
+
+AUTo_INCREMENT키워드와 함께
+새로운 레코드가 추가될 때마다 1씩 증가된 값을 저장
+author, post 테이블의 id에 auto_increment 로 바꾸자
+ALTER TABLE post MODIFY COLUMN id int AUTO_INCREMENT;
+
+실습
+-- post 테이블에 id없이 insert
+-- insert한 데이터 삭제 후 다시 insert
+
+'5', 'computer26', '3', NULL, NULL, '2023-12-17 16:25:09.505084'
+'7', 'kim2', 'abc@naver.com', NULL, NULL, '2023-11-20 11:33:54.139879'
+
+
+제약조건 UNIQUE
+
+	UNIQUE제약 조건을 설정하면, 해당 필드는 값이 unique해야함을 의미
+	방법
+	create table 테이블이름(필드명 필드타입 unique,....);
+	방법2
+	create table 테이블이름
+	(필드이름, 필드타입......[constraint 제약조건이름] unique(필드이름);
+	unique 제약 조건을 별도로 정의 선택적으로 제약 조건에 이름 부여
+
+unique제약 조건을 설장하면, 해당 필드는 자동으로 인덱스(index)로 설정
+	show index from 테이블명;
+	index삭제 : alter table 테이블이름 drop index 인덱스명;
+	제약조건 삭제시 index삭제, index 삭제시 제약조건 삭제
+실습
+unique alter
+	방법 1
+	ALTER TABLE 테이블이름 MODIFY COLUMN  필드이름 필드타입 UNIQUE
+	방법 2
+	ALTER TABLE 테이블 이름 ADD CONSTRAINT 제약조건이름 UNIQUE(필드이름)
+제약조건 제거
+제약조건 목록조회
+ALTER TABLE 테이블명 DROP CONSTRAINT 제약조건이름;
+ALTER TABLE 테이블명 DROP FOREIGN KEY 제약조건이름;
+author테이블 email에 unique 제약 조건 추가
+	컬럼 제약조건으로 추가
+	제약조건 제거 및 index 제거
+	테이블 제약조건 추가형식으로 추가
+alter table author MODIFY COLUMN email varchar(255) unique;
+SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = 'author';
+alter table author DROP CONSTRAINT  email;
+
+alter table author ADD CONSTRAINT unique(email);
+alter table author ADD CONSTRAINT author_unique unique(email); (이름정해주기)
+
+제약조건 primary key
+pk제약조건을 가진 컬럼을 기본키라고 함
+NOT NULL 과 UNIQUE제약조건의 특징을 모두가진다
+
+Pk는 테이블당 오직 하나의 필드에만 설정
+unique는 한 테이블의 여러필드에 설정가능
+not null도 물론 여러필드에 설정가능
+
+없던 pk를 설정하기 위한 alter문 예제
+	
+방법1
+alter table 테이블이름 modify column 필드이름 필드타입 primary key
+방법2
+alter table 테이블이름 add constraint 제약조건이름 p.k(필드이름)
+
+제약조건 f.k
+외래키라고 부르며, 한테이블을 다른테이블과 연결해주는 역할
+	기준이 되는 다른 테이블의 내용을 참조해서 레코드가 입력
+	하나의 테이블을 다른 테이블에 의존하게 하는것
+	다른 테이블의 필드는 반드시 unique나 p.k제약 조건이어야 함
+create table 테이블이름(필드이름 필드타입,... constraint 제약조건이름 f.k(필드이름) references 테이블이름(필드이름)[ON DELETE/UPDATE CASCADE]);
+
+참조되는 테이블에서 테이터의 수정이나 삭제가 발생시 영향
+on delete
+on update
+기본값을 delete,update 모두 restrict옵션으로 걸려있으며, 변경시 각각 지정필요
+위 설정시 동작옵션
+ cascade
+	참조되는 테이블에서 데이터를 수정/삭제시 같이 수정/삭제됨
+set null
+	참조되는 테이블에서 데이터를 수정/삭제하면 데이터는 null
+restrict
+	f.k로 잡은 테이블의 데이터가 남아있으면, fk대상 데이터 수정/삭제 불가
+	동작옵션을 주지 않으면 기본, restrict
+
+on Update CASCADE
+외래키 제약조건에서 ON UPDATE CASCADE등의 옵션
+
+POST테이블에 ON UPDATE CASCADE설정
+	먼저, 기존의 foreing key 제약조건을 조회 후 삭제
+SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = 'post';
+ALTER TABLE post DROP FOREIGN KEY post_ibfk_1;
+ALTER TABLE post DROP INDEX author_id;
+show index from post;
+따로지워지니 같이지워야함
+show index from post;로 조회해보고
+
+새롭게 제약조건 추가
+ALTER TABLE post ADD CONSTRAINT post_author_fk FOREIGN KEY(author_id) REFERENCES author(id) ON UPDATE CASCADE;
+
+테스트
+삭제
+	삭제불가
+	restrict와 동일
+수정
+	author 테이블의 id 수정시 post테이블의 id도 같이 수정
+
+author id를 update했을때 post에 author_id가 같이 바뀌었는지 확인
+
+ON DELETE CASCADE 실습
+삭제시
+	author삭제시 post같이삭제
+수정시
+	author id 수정불가
+	restrict 동일
+REFERENCES author(id) ON DELETE SET NULL ON UPDATE SET NULL 또한 동일 방법으로 테스트
+
+ALTER TABLE post DROP FOREIGN KEY post_author_fk;
+ALTER TABLE post DROP INDEX post_author_fk;
+ALTER TABLE post ADD CONSTRAINT post_author_fk FOREIGN KEY(author_id) REFERENCES author(id) ON DELETE SET NULL ON UPDATE SET NULL;
+
+잘됐는지 모르겠으면
+show create table post;로 쿼리문 확인
+
+DEFAULT
+데이터를 입력 할 때 해당 필드 값을 전달하지 않으면, 자동으로 설정된 기본값을 저장
+
+문법 
+	CREATE TABLE test
+	(
+	ID INT,
+	NAme VARCHAR(30) DEFAULT'Anonymous');
+시간 세팅시
+	ALTER TABLE author ADD create_at DATETIME DEFAULT CURRENT_TIMESTAMP;
+	ALTER TABLE post ADD create_at DATETIME DEFAULT CURRENT_TIMESTAMP;
+
+흐름제어
+CASE
+	CASE value
+	WHEN[compare_value] THEN result
+	WHEN[compare_value] THEN result...
+	ELSE result
+	END
+CASE와 END로 이루어져있고, 원하는 조건내에 존재하지않으면 ELSE문을 타고, ELSE문이 없으면 null을 return
+
+예시)(별로니까지우셈)
+SELECT ID,
+CASE NAME
+WHEN'홍길동'
+...
+END,
+EMAIL FROM author;
+
+
+post테이블에서 id,title,contents, 그리고 author_id의 경우 author_type이라는 이름으로 조회
+author_id가 만약 1이면 first_author,2이면 second_author로 조회가 되도록 하고
+
+
+select id, title, contents,
+case author_id
+	when 1 then 'First Author'
+    when 2 then 'Second Author'
+	WHEN NULL THEN 'Anonymous'   
+    -- 안먹힘 
+   ELSE 'Others'
+end
+as author_type from post;
+
+
+흐름제어
+IF(a,b,c)
+a는 조건, b는 참일 경우 반환값, c는 거짓일 경우 반환값
+만약 a가 참이면 b를 반환하고, 거짓이면 c를 반환합니다.
+select if(0<1,'yes','no');
+
+IFNULL(a,b)
+	만약 a의 값이 null 아니면, a 그자체를 반환 null이면 b를 반환
+	select id, title, contents, ifnull(author_id, 'noname') from post;
+
+if문법으로 id가 1이면, first author, 아니면 others
+id, title, contents, author_type(조건)
+
+select id, title, contents, if(author_id=1,'first_author', 'others') from post;
+
+
+위에서 사용한 ifnull의 결과값을 동일하게 if문으로 출력
+
+select id, title, contents, if(author_id !=1,'anonymous', author_id) from post;
+
+
+SELECT BOARD_ID,WRITER_ID,TITLE,PRICE,
+case STATUS
+	when 'SALE' then '판매중'
+    when 'DONE' then '거래완료'
+    when 'RESERVED' then '예약중'
+end
+as STATUS FROM USED_GOODS_BOARD
+WHERE CREATED_DATE = '2022-10-05'
+order by BOARD_ID desc;
+
+
+
+SELECT PT_NAME,PT_NO,GEND_CD,AGE,IFNULL(TLNO,'NONE') as TLNO FROM PATIENT
+WHERE AGE <= 12 AND GEND_CD = 'W'
+ORDER BY AGE DESC, PT_NAME ASC;
