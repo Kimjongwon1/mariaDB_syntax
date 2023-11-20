@@ -190,3 +190,61 @@ REGEXP
 	SELECT * FROM author WHERE name REGEXP '[가-힣]';
 
 NOT REGEXP
+
+-- 타입변환
+select cast(20200101 as date); => 2020-01-01;
+select convert('2020-01-01', date); => 2020-01-01;
+select DATE_FORMAT('2020-01-01 17:12:00', '%Y-%m-%d'); => 2020-01-01;
+select * from post where DATE_FORMAT(createdtime, '%Y-%m-%d') = '2020-01-01'; => 2020-01-01;
+
+
+CAST, CONVERT 사용시 유의사항
+	최신버전
+		-CAST('123' as INT) 방식으로 int 사용가능
+		-CAST('123' as signed)방식으로 singed(또는 unsigned)사용 가능
+	구버전	
+		-CASTS('123' as signed)방식으로 singed(또는 unsigned)만 사용 가능
+	여기서 signed는 부호있는 정수 , 즉 음/양수 모두 포함
+		unsigned는 부호 없는 정수로서 0이상 양수를 의미
+
+날짜 데이터 조회하는 방식 중 많이 사용 하는 방식
+	DATE_FORMAT(date,format)을 활용한 조회
+		-Y, mm, dd, H, i, s
+	LIKE
+	SELECT * FROM post where createdtime like '2023%';
+	Between
+	특정날짜 범위를 지정하여 데이터를 검색
+	WHERE createdtime BETWEEN '2023-11-01' AND '2023-11-20';	
+	날짜비교연산자
+	WHERE createdtime >= '2021-01-01' AND createdtime<= '2023-11-17'
+오늘날짜 관련함수
+	-now();
+	ex) select now();
+실습 date_format,like,between,비교연산자를 각각 사용하여 2023년 생성된 데이터 출력
+select id, DATE_FORMAT(createdTime, '%y-%m-%d') from post where DATE_FORMAT(createdTime, '%Y-%m') = '2023-11' ;
+SELECT * FROM post WHERE createdtime BETWEEN '2023-11-01' AND '2023-11-20';	
+SELECT * FROM post WHERE createdtime >= '2021-01-01' AND createdtime<= '2023-11-17';
+실급 now()를 활용하여 오늘날짜에 생성된 데이터 출력
+select now();
+	
+
+제약조건
+데이터를 입력받을 때 실행되는 검사 규칙
+
+create문으로 테이블을 생성 또는 alter문으로 필드를 추가할 때 설정
+종류
+ NOT NULL
+ PRIMARY KEY -> NOT NULL, UNIQUE, 한 테이블 당 1개
+ FOREIGN KEY
+ UNIQUE -> 한 테이블에 여러개 설정가능
+
+NOT NULL
+
+default값은 nullable
+
+not null제약 조건이 설정된 필드는 무조건 데이터를 가지고 있어야 한다.
+
+AUTo_INCREMENT키워드와 함께
+새로운 레코드가 추가될 때마다 1씩 증가된 값을 저장
+author, post 테이블의 id에 auto_increment 로 바꾸자
+ALTER TABLE post MODIFY COLUMN id int AUTO_INCREMENT;

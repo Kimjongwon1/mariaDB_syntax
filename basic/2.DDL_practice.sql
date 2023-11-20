@@ -14,3 +14,13 @@ CREATE TABLE `post` (
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ;
 describe post;
+
+
+
+describe post;
+use board;
+select * from post;
+select now();
+SELECT * FROM post WHERE createdtime >= '2021-01-01' AND createdtime<= '2023-11-17';
+
+ALTER TABLE post MODIFY COLUMN title varchar(255)not null;

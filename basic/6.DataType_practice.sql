@@ -70,3 +70,56 @@ post 테이블의 id가 2~4까지 데이터 조회
 	between활용
 	and 조건 활용
 	or 조건 활용
+
+
+
+describe post;
+use board;
+select * from post;
+select now();
+SELECT * FROM post WHERE createdtime >= '2021-01-01' AND createdtime<= '2023-11-17';
+
+ALTER TABLE post MODIFY COLUMN title varchar(255)not null;
+
+ALTER TABLE post MODIFY COLUMN id int AUTO_INCREMENT;
+
+-- post 테이블에 id없이 insert
+-- insert한 데이터 삭제 후 다시 insert
+
+insert into post(title, contents)values('kim2','abc@naver.com');
+
+실습
+-- post 테이블에 id없이 insert
+-- insert한 데이터 삭제 후 다시 insert
+
+'5', 'computer26', '3', NULL, NULL, '2023-12-17 16:25:09.505084'
+'7', 'kim2', 'abc@naver.com', NULL, NULL, '2023-11-20 11:33:54.139879'
+
+
+SELECT BOOK_ID,DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE from BOOK where CATEGORY ='인문' AND DATE_FORMAT(PUBLISHED_DATE, '%Y') = '2021' order by PUBLISHED_DATE ASC;
+
+# 2
+SELECT BOOK_ID,DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE from BOOK where CATEGORY ='인문' AND PUBLISHED_DATE like '2021%' order by PUBLISHED_DATE ASC;
+
+# 3
+SELECT BOOK_ID,DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE from BOOK where CATEGORY ='인문' AND PUBLISHED_DATE BETWEEN '2021-01-01' AND '2021-12-31' order by PUBLISHED_DATE ASC;
+
+->AS 굳이 쓸필요없는듯?(내생각)
+
+제약조건 제거
+제약조건 목록조회
+
+ALTER TABLE 테이블명 DROP CONSTRAINT 제약조건이름;
+ALTER TABLE 테이블명 DROP FOREIGN KEY 제약조건이름;
+
+author테이블 email에 unique 제약 조건 추가
+	컬럼 제약조건으로 추가
+	제약조건 제거 및 index 제거
+	테이블 제약조건 추가형식으로 추가
+
+alter table author MODIFY COLUMN email varchar(255) unique;
+SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = 'author';
+alter table author DROP CONSTRAINT  email;
+
+alter table author ADD CONSTRAINT unique(email);

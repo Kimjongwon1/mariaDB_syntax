@@ -40,3 +40,4 @@ Query OK, 1 row affected (0.011 sec)
 방법 2)
 update post set author_id = null where author_id =2;
 delete from author where id = 2;
+
