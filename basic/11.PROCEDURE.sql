@@ -102,10 +102,6 @@ select 컬럼명 into  변수
 	->조건이 거짓일때 실행할 명령어
 	END IF;
 "select 컬럼명 into 변수"문과 함께 많이 사용
-while 
-	while 조건식 DO
-	-조건이 참일 동안 반복 실행할 명령'
-	END WHILE;
 
 
 실습 post 테이블에 if문을 활용하여 고액 원고료 작가 조회
@@ -128,4 +124,26 @@ DELIMITER ;
 
 call post_price(1);
 
+while 
+	while 조건식 DO
+	-조건이 참일 동안 반복 실행할 명령'
+	END WHILE;
 
+while문
+
+DECLARE a int DEFAULT 0;
+while a<10 DO
+	select "Hello world";
+END WHILE;
+
+
+DB Dump
+데이터베이스의 구조와 데이터를 sql형식으로 추철하는데 사용되는 방식을 dump라 함 주로 특정 db에서 다른 db로 데이터와 db구조를 이전,복사 백업 할 때 사용
+
+데이터베이스 dump
+    mysqldump -u [username]-p--default-character-set=utf8mb4[database_name]>dumpfile_sql
+    mariaDB에서도 mysql명령어를 사용함에 유의(mariaDB가 mysql의 fork였던 관계로, 여전히 mysql관련 명령어 사용됨)
+    덤프파일을 별도의 에디터에서 추가 작업하지 않도록 유의->UTF8이 아닌 UTF16이 되면 복원 에러
+
+    dump 파일 복원  
+    mysqldump -u root -p --default-character-set=utf8mb4 board > dumpfile_sql
