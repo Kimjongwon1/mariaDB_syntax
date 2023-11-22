@@ -1,0 +1,57 @@
+윈도우
+1)구축된 DB를 SQL파일화 하고 전체 DB 다시 생성
+    여기서는 마리아DB_syntax/project 폴더에 파일을 생성해주었고
+    mysqldump -u root -p --default-character-set=utf8mb4 board > dumpfile2_sql 
+    명령어를 사용하였다.
+2)쿼리문 생성 후 db 삭제 및 쿼리문 재실행
+    ui로 기존 DB 드랍 후 mysql -u root -p board < dumpfile2_sql
+
+3)깃허브에 커밋 
+
+리눅스
+1)리눅스에 DB구축(mariadb 설치)
+    sudo apt update(왠진 모르겠지만 항상 하는듯 하다.)
+    sudo apt-get install -y mariadb-server(그냥은 비밀번호 창을 넘어갈수가 없다. 10버전 이후부터 적용된  Unix Socket 방식 때문인듯함
+    참조 : https://www.nemonein.xyz/2019/07/2254/)
+    
+    mysql -u root -p <- 이방식은 다음과 같은 오류가 생기니
+    Enter password: 
+    ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+
+    sudo mysql<-접속
+    create database board; 틀 생성
+    use board;
+    Database changed
+    MariaDB [board]> exit;
+    들어가지는거 확인 후 종료
+
+    git init
+    git clone 깃허브 주소
+    cd mariaDB_syntax
+    cd project
+
+     ls명령어로 파일 확인
+     dumpfile2_sql  dumpfile_sql
+
+    그냥하면 오류남
+    mysql -u root -p board < dumpfile2_sql 
+    Enter password: 
+    ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+
+    sudo mysql -u root -p board < dumpfile2_sql 
+
+    MariaDB [board]> select * from post;
+    +----+-------------+------------------+-----------+-------+----------------------------+
+    | id | title       | contents         | author_id | price | createdTime                |
+    +----+-------------+------------------+-----------+-------+----------------------------+
+    |  1 | computer426 | 68               |      NULL |  NULL | 2023-11-17 16:25:09.505084 |
+    |  5 | computer26  | 3                |      NULL |  NULL | 2023-12-17 16:25:09.
+
+    내부파일 잘 부어져 있는걸 확인
+
+
+
+
+
+
+
