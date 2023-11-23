@@ -121,3 +121,23 @@ select * from post;
 
 select * from author;
 
+
+
+-- 스키마 설계
+주문관리 서비스 설계
+요구사항
+    모든 테이블 컬럼 자유설계
+    ordersystem DB 생성
+    해당 서비스에서 회원가입 가능
+        -MEMBERS
+        -회원의 종류가 user,admin,seller로 구성
+    회원이 상품과 재고수량을 등록
+        -ITEMS
+        -상품명,상품가격,재고
+        -누가 등록했는지에 대한 정보가 남아야 함에 유의
+    회원이 여러 상품을 한꺼번에 주문가능
+        ORDER,ORDER_DETALS
+산출물
+    ER다이어그램
+    스키마 구현
+    DDL
