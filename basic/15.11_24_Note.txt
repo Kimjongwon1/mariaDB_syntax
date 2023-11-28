@@ -1,0 +1,126 @@
+DB 기획 -개발 전부 다 하기(자유주제)
+
+요구사항 상세하게 정의
+DB설계
+테스트케이스
+
+깃에 올릴 때 순차적으로
+
+프젝발표
+
+https://shuu.tistory.com/68
+외래키 설명이 잘되어있음
+
+
+
+MEMBERS(id INT, user VARCHAR(255), admin VARCHAR(255),seller VARCHAR(255), PRIMARY KEY (id))
+
+
+CREATE TABLE ITEMS(
+id INT, 
+product_name VARCHAR(255), 
+price int, 
+stock int, unique(stock),unique(product_name),
+PRIMARY KEY (id),
+buyer_id INT NOT NULL, foreign key(buyer_id) references MEMBERS(id), unique(buyer_id));
+
+CREATE TABLE ORDERS(id INT NOT NULL, orders VARCHAR(255), address VARCHAR(255),  PRIMARY KEY (id),
+unique(id));
+
+
+CREATE TABLE orders_details(id INT NOT NULL,PRIMARY KEY (id),unique(id),
+Order_stock INT NOT null,
+Order_product_name VARCHAR(255) NOT null,
+Order_id INT NOT NULL,
+foreign key(Order_stock) references ITEMS(stock),
+foreign key(Order_product_name) references ITEMS(product_name),
+foreign key(Order_id) references ITEMS(buyer_id));
+
+
+
+tinyint unsigned 를 해줘야 -256(음수)까지 안하고 양수까지 표현됨
+
+
+
+
+
+-- Ordersystem Practice
+-- Create members table
+create table members(id INT not null auto_increment, name VARCHAR(255) not null,
+email VARCHAR(255) not null, password VARCHAR(255) not null,
+role enum('user', 'admin', 'seller') default 'user',
+primary key(id));
+-- Create item table
+create table items(id INT not null auto_increment, product_name VARCHAR(255) not null,
+product_price decimal(10,3) not null, product_number BIGINT not null,
+seller_id INT not null, foreign key(seller_id) references members(id),
+primary key(id));
+-- Create orders table
+create table orders(id INT not null auto_increment, member_id INT not null,
+ordered_date DATETIME default current_timestamp,
+primary key(id),
+foreign key(member_id) references members(id));
+-- Create orders_details table
+create table orders_details(id INT not null auto_increment, order_id INT not null, item_id INT not null,
+ordered_num INT NOT NULL, primary key(id),
+foreign key(order_id) references orders(id),
+foreign key(item_id) references items(id));
+-- Insert into members
+insert into members(id, name, email, password, role) values (1, "Summer", "summer@gmail.com", "summer123", 'admin');
+insert into members(id, name, email, password, role) values (2, "Jake", "jake@gmail.com", "jake123", 'user');
+insert into members(id, name, email, password) values (3, "Tom", "tom@naver.com", "tom123");
+insert into members(id, name, email, password, role) values (4, "Kyle", "kyle@yahoo.com", "kyle123", 'user');
+insert into members(id, name, email, password, role) values (5, "Ella", "ella@yahoo.com", "ella1223", 'seller');
+-- Insert into items
+insert into items(id, product_name, product_price, product_number, seller_id)
+values (1, "book", 13.2, 50, 1);
+insert into items(id, product_name, product_price, product_number, seller_id)
+values (2, "laptop", 492.1, 10, 2);
+insert into items(id, product_name, product_price, product_number, seller_id)
+values (3, "phone", 290.8, 20, 3);
+insert into items(id, product_name, product_price, product_number, seller_id)
+values (4, "pear", 4.2, 300, 4);
+insert into items(id, product_name, product_price, product_number, seller_id)
+values (5, "apple", 1.7, 450, 5);
+-- Insert into orders
+insert into orders(id, member_id) values (1, 1);
+insert into orders(id, member_id) values (2, 2);
+insert into orders(id, member_id) values (3, 2);
+insert into orders(id, member_id) values (4, 1);
+insert into orders(id, member_id) values (5, 2);
+-- Insert into orders_details
+insert into orders_details(id, order_id, item_id, ordered_num)
+values(1, 1, 1, 10);
+insert into orders_details(id, order_id, item_id, ordered_num)
+values(2, 1, 2, 20);
+insert into orders_details(id, order_id, item_id, ordered_num)
+values(3, 2, 1, 30);
+
+
+
+
+정규화
+'
+비정규 릴레이션 ->1NF 원자값이 아닌 도메인 분해
+1NF->2NF 부분적 함수 종속 제거
+2NF ->3NF 이행적 함수 종속 제거
+3NF ->BCNF 결정자이면서 후보키가 아닌 것 제거
+'기억 -> 이게 제일 중요
+
+
+함수적 종속성
+
+f(x) = y
+x*3 = y
+따라서 x는 y에 종속적
+
+
+https://velog.io/@mrcocoball/220329%ED%82%A4%EC%9D%98-%EC%A2%85%EB%A5%98-%EC%8A%88%ED%8D%BC-%ED%82%A4-%ED%9B%84%EB%B3%B4-%ED%82%A4-%EA%B8%B0%EB%B3%B8-%ED%82%A4-%EB%8C%80%EC%B2%B4-%ED%82%A4-%EC%99%B8%EB%9E%98-%ED%82%A4
+
+키설명
+
+
+오더->오더디테일로 나뉘어지는 근거(정규화)
+
+
+
